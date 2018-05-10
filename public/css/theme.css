@@ -1,0 +1,36 @@
+body {
+    padding: 0 30px;
+    font-family: 'Nanum Gothic Coding', monospace;
+}
+
+input[type=text] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.area {
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+}
+
+.header {
+    background-color: gainsboro;
+    text-align: center;
+    padding: 20px;
+}
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: dimgray;
+    color: white;
+    text-align: center;
+}

@@ -1,12 +1,12 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
+const express = require('express');
+const path = require('path');
+const favicon = require('serve-favicon');
 
-var app = express();
+let app = express();
 app.set('port', process.env.PORT || 3000);
 
 app.listen(app.get('port'), function () {
-    console.log('http://localhost:' + app.get('port') + '/');
+    console.log('Express started in ' + app.get('env') + ' mode on http://localhost:' + app.get('port') + '/');
 });
 
 // view engine setup
@@ -26,7 +26,7 @@ app.get('/', function (req, res) {
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-    var err = new Error('Not Found');
+    let err = new Error('Not Found');
     err.status = 404;
     next(err);
 });
@@ -41,5 +41,19 @@ app.use(function (err, req, res, next) {
     res.status(err.status || 500);
     res.render('error');
 });
+
+// change logging middleware
+switch(app.get('env')) {
+    // $ export NODE_ENV=development OR $ export NODE_ENV=production
+
+    case 'development':
+        app.use(require('morgan')('dev'));
+        break;
+    case 'production':
+        app.use(require('express-logger')({
+            path: __dirname + '/log/requests.log'
+        }));
+        break;
+}
 
 module.exports = app;

@@ -4,11 +4,43 @@
         <% include header.ejs %>
     </head>
     <body>
-        <h1 class="header">THIS IS TEST</h1>
+        <h1 class="header" id="title">THIS IS TEST</h1>
         <div class="area">
-            <input type="text" placeholder="HERE!">
+            <textarea id="textfield" cols="80" rows="24" autofocus></textarea>
         </div>
 
         <% include footer.ejs %>
     </body>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/javascript/jquery-3.3.1.min.js"></script>
+    <script>
+        $(function () {
+            var socket = io.connect('https://localhost:3000', {'sync disconnect on unload':false});
+
+            var room = prompt('Enter room name', 'ROOM1');
+            if (room != null) {
+                document.getElementById('title').innerHTML = 'You are in ' + room + '!';
+            }
+            socket.on('connect', function () {
+                socket.emit('room', room);
+            });
+
+            socket.on('server_character', function (content) {
+                console.log('from server: ' + content);
+                document.getElementById('textfield').innerHTML = content;
+            });
+
+            $('#textfield').on('keyup', function () {
+                var msg = $('#textfield').val();
+
+                socket.emit('client_character', {
+                    buffer: msg
+                });
+                console.log('to server: ', {
+                    buffer: msg
+                });
+            });
+        });
+    </script>
 </html>

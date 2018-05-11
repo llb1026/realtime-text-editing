@@ -1,19 +1,21 @@
-const express = require('express');
-const https = require('https');
-const fs = require('fs');
-const path = require('path');
-const favicon = require('serve-favicon');
+var express = require('express');
+var fs = require('fs');
+var path = require('path');
+var favicon = require('serve-favicon');
+
+var app = express();
+app.set('port', process.env.PORT || 3000);
 
 // https
-let options = {
+var options = {
     key: fs.readFileSync('./cert/key.pem'),
     cert: fs.readFileSync('./cert/cert.pem')
 };
 
-let app = express();
-app.set('port', process.env.PORT || 3000);
+var https = require('https').createServer(options, app);
+var io = require('socket.io').listen(https);
 
-https.createServer(options, app).listen(app.get('port'), function () {
+https.listen(app.get('port'), function () {
     console.log('Express started in ' + app.get('env') + ' mode on https://localhost:' + app.get('port') + '/');
 });
 
@@ -32,9 +34,42 @@ app.get('/', function (req, res) {
     });
 });
 
+
+
+
+io.sockets.on('connection', function (socket) {
+    console.log('New client');
+
+    socket.on('room', function (room) {
+        socket.join(room);
+        console.log('join room: ' + room);
+
+        socket.on('client_character', function (msg) {
+            var text = '';
+            if (text.length >= 0) {
+                text = text + msg.buffer;
+            }
+            console.log('Data from client: ' + msg.buffer);
+            socket.in(room).emit('server_character', text);
+        });
+    });
+
+    socket.on('disconnect', function () {
+        // socket.disconnect();
+        console.log('Disconnect');
+    });
+
+});
+
+
+
+
+
+
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-    let err = new Error('Not Found');
+    var err = new Error('Not Found');
     err.status = 404;
     next(err);
 });

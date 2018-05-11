@@ -22,6 +22,7 @@
             if (room != null) {
                 document.getElementById('title').innerHTML = 'You are in ' + room + '!';
             }
+
             socket.on('connect', function () {
                 socket.emit('room', room);
             });

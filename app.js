@@ -34,8 +34,7 @@ app.get('/', function (req, res) {
     });
 });
 
-
-
+// socket connection
 
 io.sockets.on('connection', function (socket) {
     console.log('New client');
@@ -60,12 +59,6 @@ io.sockets.on('connection', function (socket) {
     });
 
 });
-
-
-
-
-
-
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

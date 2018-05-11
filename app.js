@@ -1,12 +1,20 @@
 const express = require('express');
+const https = require('https');
+const fs = require('fs');
 const path = require('path');
 const favicon = require('serve-favicon');
+
+// https
+let options = {
+    key: fs.readFileSync('./cert/key.pem'),
+    cert: fs.readFileSync('./cert/cert.pem')
+};
 
 let app = express();
 app.set('port', process.env.PORT || 3000);
 
-app.listen(app.get('port'), function () {
-    console.log('Express started in ' + app.get('env') + ' mode on http://localhost:' + app.get('port') + '/');
+https.createServer(options, app).listen(app.get('port'), function () {
+    console.log('Express started in ' + app.get('env') + ' mode on https://localhost:' + app.get('port') + '/');
 });
 
 // view engine setup
@@ -49,11 +57,11 @@ switch(app.get('env')) {
     case 'development':
         app.use(require('morgan')('dev'));
         break;
-    case 'production':
-        app.use(require('express-logger')({
-            path: __dirname + '/log/requests.log'
-        }));
-        break;
+    // case 'production':
+    //     app.use(require('express-logger')({
+    //         path: __dirname + '/log/requests.log'
+    //     }));
+    //     break;
 }
 
 module.exports = app;

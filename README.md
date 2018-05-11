@@ -28,10 +28,10 @@ $ openssl req -x509 -new -key key.pem > cert.pem  // 이후 인증서를 만드�
 4. Run project
 
 ```
-$ npm start
+$ node app.js
 ```
 
 then open https://localhost:3000/ in multiple browsers
 
-*You can choose **only one** browser to edit the text in the textarea and see other browsers reflect what you're typing in real-time.*
+*You can pick **only one** browser to edit the text in the textarea and see other browsers reflect what you're typing in real-time.*
 *Unfortunately, it doesn't allow multi-user editing for now. But it will be improved soon.*

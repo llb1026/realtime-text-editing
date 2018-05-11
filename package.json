@@ -5,7 +5,7 @@
   "main": "app.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/llb1026/realtime-multiuser-text-editing.git"
+    "url": "git+https://github.com/llb1026/realtime-text-editing.git"
   },
   "author": "JIYUN LEE",
   "license": "ISC",
